@@ -6,18 +6,17 @@
 
   <groupId>com.mcgee</groupId>
   <artifactId>mcgee-smp</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
   <packaging>jar</packaging>
   <name>McGeeSMP</name>
 
   <properties>
-    <!-- Paper 26.3's API is compiled for Java 25 (class file version 69), so
-         anything older fails with "wrong version 69.0, should be 65.0". -->
+    <!-- Paper 26.x API is compiled for Java 25 (class file version 69); older
+         compilers fail with "wrong version 69.0, should be 65.0". -->
     <java.version>25</java.version>
-    <!-- Paper dropped the old "1.21.4-R0.1-SNAPSHOT" scheme; versions now look
-         like 26.3.build.142-beta. Read from the repository's maven-metadata,
-         which the build prints, rather than assumed. -->
-    <paper.version>26.3.build.142-beta</paper.version>
+    <!-- Must match the server. Geyser supports Java 26.2, so the server runs
+         Paper 26.2 build 129 (stable), and the plugin compiles against it. -->
+    <paper.version>26.2.build.129-stable</paper.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -25,6 +24,10 @@
     <repository>
       <id>papermc</id>
       <url>https://repo.papermc.io/repository/maven-public/</url>
+    </repository>
+    <repository>
+      <id>jitpack</id>
+      <url>https://jitpack.io</url>
     </repository>
   </repositories>
 
@@ -34,6 +37,21 @@
       <artifactId>paper-api</artifactId>
       <version>${paper.version}</version>
       <scope>provided</scope>
+    </dependency>
+    <!-- The standard "bank" interface the shop, auction house and spawner
+         plugins all talk to. VaultUnlocked on the server provides it at
+         runtime, so it isn't bundled into our jar. -->
+    <dependency>
+      <groupId>com.github.MilkBowl</groupId>
+      <artifactId>VaultAPI</artifactId>
+      <version>1.7.1</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.bukkit</groupId>
+          <artifactId>bukkit</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 

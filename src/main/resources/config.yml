@@ -1,2 +1,16 @@
-# McGeeSMP configuration. Real settings arrive with the economy modules.
+# McGeeSMP configuration
+
+economy:
+  # What a brand-new player starts with.
+  starting-balance: 100
+
+  # Specific players who start with a different amount (from the task doc).
+  # Applied once, the first time they join after this plugin is installed.
+  # Bedrock players show up with a leading "." and underscores instead of
+  # spaces (".Lighting_12959"); both spellings match.
+  starting-balances:
+    "Lighting 12959": 55000
+    "Viperishfive48": 17000
+    "Tonyt1234563": 10000
+
 debug: false

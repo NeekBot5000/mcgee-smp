@@ -4,7 +4,29 @@ main: com.mcgee.smp.McGeeSMP
 api-version: '1.21'
 description: Economy and gameplay systems for the McGee SMP.
 authors: [NeekBot5000]
+# Vault/VaultUnlocked must be up before we register the economy, and the shop,
+# auction house and spawner plugins look the economy up when THEY start, so
+# we have to start before them.
+softdepend: [Vault, VaultUnlocked]
+loadbefore: [EconomyShopGUI, zAuctionHouse, SmartSpawner]
 commands:
   smpinfo:
     description: Show plugin status.
-    usage: /smpinfo
+  balance:
+    description: Show your balance, or someone else's.
+    aliases: [bal, money]
+    usage: /bal [player]
+  pay:
+    description: Send money to another player.
+    usage: /pay <player> <amount>
+  baltop:
+    description: The richest players.
+    aliases: [balancetop]
+  eco:
+    description: Operator money controls.
+    usage: /eco <give|take|set> <player> <amount>
+    permission: mcgee.admin
+permissions:
+  mcgee.admin:
+    description: Operator economy commands.
+    default: op
