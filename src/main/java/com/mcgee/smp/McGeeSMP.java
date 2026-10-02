@@ -5,10 +5,13 @@ import com.mcgee.smp.economy.EconomyCommands;
 import com.mcgee.smp.economy.JoinListener;
 import com.mcgee.smp.economy.Money;
 import com.mcgee.smp.hud.PersonalBoard;
+import com.mcgee.smp.misc.LocatorBar;
+import com.mcgee.smp.misc.MapBlocker;
 import com.mcgee.smp.misc.NightVision;
 import com.mcgee.smp.rtp.RandomTeleport;
 import com.mcgee.smp.shards.ShardCommands;
 import com.mcgee.smp.shards.Shards;
+import com.mcgee.smp.storage.BigEnderChest;
 import com.mcgee.smp.tools.AbilityListener;
 import com.mcgee.smp.tools.ShardShop;
 import com.mcgee.smp.tools.SmithingListener;
@@ -26,6 +29,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class McGeeSMP extends JavaPlugin {
     private Balances balances;
     private Shards shards;
+    private BigEnderChest enderChests;
     private boolean vaultHooked;
 
     @Override
@@ -78,6 +82,16 @@ public final class McGeeSMP extends JavaPlugin {
         getServer().getPluginManager().registerEvents(board, this);
         getLogger().info("RTP, night vision and personal sidebar ready.");
 
+        if (getConfig().getBoolean("maps-disabled", true)) {
+            getServer().getPluginManager().registerEvents(new MapBlocker(), this);
+        }
+        if (!getConfig().getBoolean("locator-bar", false)) {
+            getServer().getPluginManager().registerEvents(new LocatorBar(this), this);
+        }
+        enderChests = new BigEnderChest(this);
+        getServer().getPluginManager().registerEvents(enderChests, this);
+        getLogger().info("Ender chests: " + Math.min(6, Math.max(3, getConfig().getInt("enderchest.rows", 6))) + " rows.");
+
         vaultHooked = hookVault();
 
         // Save once a minute; also on shutdown.
@@ -127,6 +141,7 @@ public final class McGeeSMP extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (enderChests != null) enderChests.closeAll();   // saves anything open
         if (balances != null) balances.save();
         if (shards != null) shards.save();
         getLogger().info("McGeeSMP disabled.");

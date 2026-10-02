@@ -48,4 +48,13 @@ rtp:
   # Spots tried before giving up (oceans, lava and treetops are rejected).
   attempts: 10
 
+enderchest:
+  # 3 = normal size, up to 6 = double. The first 3 rows are the normal
+  # ender chest; the extra rows are saved in plugins/McGeeSMP/enderchests/.
+  rows: 6
+
+# Task doc: maps don't work, and the locator bar stays off.
+maps-disabled: true
+locator-bar: false
+
 debug: false
