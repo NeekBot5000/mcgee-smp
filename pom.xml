@@ -12,9 +12,10 @@
 
   <properties>
     <java.version>21</java.version>
-    <!-- Overridable from CI: mvn package -Dpaper.version=26.1-R0.1-SNAPSHOT
-         The build prints available versions, so this gets pinned once. -->
-    <paper.version>26.1-R0.1-SNAPSHOT</paper.version>
+    <!-- Paper dropped the old "1.21.4-R0.1-SNAPSHOT" scheme; versions now look
+         like 26.3.build.142-beta. Read from the repository's maven-metadata,
+         which the build prints, rather than assumed. -->
+    <paper.version>26.3.build.142-beta</paper.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 

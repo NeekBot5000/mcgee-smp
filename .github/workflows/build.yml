@@ -12,26 +12,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      # Runs BEFORE the build so the log shows the real version list even when
-      # the compile fails. Paper moved to year-based versions (26.x), so the
-      # right one has to be read off the repository rather than assumed.
+      # Kept because Paper's versioning has changed before and will again.
+      # Runs first so the list is visible even when the compile fails.
       - name: Available paper-api versions
         run: |
-          echo "=== latest 20 paper-api versions ==="
           curl -sSL --max-time 30 \
             https://repo.papermc.io/repository/maven-public/io/papermc/paper/paper-api/maven-metadata.xml \
             -o meta.xml || echo "could not fetch metadata"
           if [ -f meta.xml ]; then
-            grep -o '<version>[^<]*</version>' meta.xml \
-              | sed 's/<[^>]*>//g' | tail -20
-            echo "=== release/latest markers ==="
-            grep -o '<release>[^<]*</release>' meta.xml | sed 's/<[^>]*>//g' || true
-            grep -o '<latest>[^<]*</latest>' meta.xml | sed 's/<[^>]*>//g' || true
+            echo "=== latest 10 ==="
+            grep -o '<version>[^<]*</version>' meta.xml | sed 's/<[^>]*>//g' | tail -10
           fi
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '21'
@@ -46,7 +41,51 @@ jobs:
           path: target/*.jar
           if-no-files-found: error
 
-      # One-click download: the jar is attached to a release.
+      # Compiling only proves it builds. This boots a real Paper server with
+      # the plugin installed and checks it actually loads - the failure mode
+      # compiling can't catch (bad plugin.yml, wrong api-version, a missing
+      # class at runtime).
+      - name: Boot test on a real server
+        run: |
+          set -o pipefail
+          mkdir -p run/plugins && cp target/*.jar run/plugins/
+          cd run
+          echo "eula=true" > eula.txt
+
+          VER=$(curl -sSL https://api.papermc.io/v2/projects/paper \
+                | python3 -c "import sys,json;print(json.load(sys.stdin)['versions'][-1])" 2>/dev/null || echo "")
+          echo "Paper version: ${VER:-unknown}"
+          if [ -n "$VER" ]; then
+            META=$(curl -sSL "https://api.papermc.io/v2/projects/paper/versions/$VER/builds" || echo "")
+            BUILD=$(echo "$META" | python3 -c "import sys,json;b=json.load(sys.stdin)['builds'];print(b[-1]['build'])" 2>/dev/null || echo "")
+            JARN=$(echo "$META" | python3 -c "import sys,json;b=json.load(sys.stdin)['builds'];print(b[-1]['downloads']['application']['name'])" 2>/dev/null || echo "")
+            if [ -n "$BUILD" ] && [ -n "$JARN" ]; then
+              curl -sSL -o paper.jar \
+                "https://api.papermc.io/v2/projects/paper/versions/$VER/builds/$BUILD/downloads/$JARN" || true
+            fi
+          fi
+
+          if [ ! -s paper.jar ]; then
+            echo "::warning::Could not download a Paper server; skipping the boot test."
+            exit 0
+          fi
+
+          # Stop as soon as it has finished starting.
+          (sleep 150; echo "stop") | timeout 240 java -Xmx2G -jar paper.jar nogui > server.log 2>&1 || true
+
+          echo "=== plugin lines ==="
+          grep -i "mcgee" server.log || true
+          echo "=== errors ==="
+          grep -iE "could not load|error occurred|exception" server.log | head -20 || true
+
+          if grep -q "McGeeSMP .* enabled" server.log; then
+            echo "Plugin loaded and enabled."
+          else
+            echo "::error::Plugin did not enable. Last 60 lines:"
+            tail -60 server.log
+            exit 1
+          fi
+
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
