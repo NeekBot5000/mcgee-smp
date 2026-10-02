@@ -11,7 +11,9 @@
   <name>McGeeSMP</name>
 
   <properties>
-    <java.version>21</java.version>
+    <!-- Paper 26.3's API is compiled for Java 25 (class file version 69), so
+         anything older fails with "wrong version 69.0, should be 65.0". -->
+    <java.version>25</java.version>
     <!-- Paper dropped the old "1.21.4-R0.1-SNAPSHOT" scheme; versions now look
          like 26.3.build.142-beta. Read from the repository's maven-metadata,
          which the build prints, rather than assumed. -->

@@ -26,10 +26,11 @@ jobs:
             grep -o '<version>[^<]*</version>' meta.xml | sed 's/<[^>]*>//g' | tail -10
           fi
 
+      # Java 25: Paper 26.3's API class files are version 69.
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: '21'
+          java-version: '25'
           cache: maven
 
       - name: Build
