@@ -13,4 +13,13 @@ economy:
     "Viperishfive48": 17000
     "Tonyt1234563": 10000
 
+shards:
+  # Everyone online earns this many shards every interval.
+  amount: 1
+  interval-minutes: 5
+  # Money cost per shard with /buyshards (from the task doc: $10,000).
+  price: 10000
+  # Most shards that can be bought in one go.
+  max-buy: 1000
+
 debug: false

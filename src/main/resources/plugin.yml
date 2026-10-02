@@ -22,6 +22,16 @@ commands:
   baltop:
     description: The richest players.
     aliases: [balancetop]
+  shards:
+    description: Show your shards, or someone else's.
+    usage: /shards [player]
+  buyshards:
+    description: Buy shards with money.
+    usage: /buyshards <amount>
+  shardsadmin:
+    description: Operator shard controls.
+    usage: /shardsadmin <give|take|set> <player> <amount>
+    permission: mcgee.admin
   eco:
     description: Operator money controls.
     usage: /eco <give|take|set> <player> <amount>
