@@ -21,6 +21,10 @@ shards:
   price: 10000
   # Most shards that can be bought in one go.
   max-buy: 1000
+  # DonutSMP gives 10 shards per player kill. Each killer/victim pair is only
+  # rewarded once per cooldown, so friends can't farm each other.
+  per-kill: 10
+  per-kill-cooldown-minutes: 10
 
 tools:
   # Shard costs. Eternal gear never breaks and is about half the price of the
@@ -82,6 +86,19 @@ auction:
       SHULKER_SHELL: {amount: 2, price: 20000}
       GOLDEN_APPLE: {amount: 8, price: 10000}
       TOTEM_OF_UNDYING: {amount: 1, price: 25000}
+
+orders:
+  max-per-player: 10
+  max-amount: 100000
+
+bounty:
+  minimum: 1000
+
+daily:
+  money: 1000
+  shards: 2
+  # Hours between claims (20, so a slightly early login still counts).
+  hours: 20
 
 enderchest:
   # 3 = normal size, up to 6 = double. The first 3 rows are the normal

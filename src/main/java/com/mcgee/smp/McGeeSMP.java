@@ -10,9 +10,13 @@ import com.mcgee.smp.hud.PersonalBoard;
 import com.mcgee.smp.misc.LocatorBar;
 import com.mcgee.smp.misc.MapBlocker;
 import com.mcgee.smp.misc.NightVision;
+import com.mcgee.smp.orders.Orders;
 import com.mcgee.smp.rtp.RandomTeleport;
 import com.mcgee.smp.shards.ShardCommands;
 import com.mcgee.smp.shards.Shards;
+import com.mcgee.smp.social.Combat;
+import com.mcgee.smp.social.DailyReward;
+import com.mcgee.smp.social.Leaderboards;
 import com.mcgee.smp.storage.BigEnderChest;
 import com.mcgee.smp.tools.AbilityListener;
 import com.mcgee.smp.tools.ShardShop;
@@ -97,6 +101,24 @@ public final class McGeeSMP extends JavaPlugin {
         if (ahCmd != null) { ahCmd.setExecutor(ah); ahCmd.setTabCompleter(ah); }
         getServer().getPluginManager().registerEvents(ah, this);
         ah.startRestock();
+
+        Orders orders = new Orders(this, balances);
+        for (String name : new String[]{"order", "orders", "stash"}) {
+            PluginCommand c = getCommand(name);
+            if (c != null) c.setExecutor(orders);
+        }
+        getServer().getPluginManager().registerEvents(orders, this);
+        Combat combat = new Combat(this, shards, balances);
+        PluginCommand bountyCmd = getCommand("bounty");
+        if (bountyCmd != null) bountyCmd.setExecutor(combat);
+        getServer().getPluginManager().registerEvents(combat, this);
+        Leaderboards lb = new Leaderboards(balances, shards);
+        PluginCommand lbCmd = getCommand("leaderboard");
+        if (lbCmd != null) lbCmd.setExecutor(lb);
+        getServer().getPluginManager().registerEvents(lb, this);
+        PluginCommand dailyCmd = getCommand("daily");
+        if (dailyCmd != null) dailyCmd.setExecutor(new DailyReward(this, balances, shards));
+        getLogger().info("Orders, bounties, kill shards, leaderboards and daily rewards ready.");
 
         getLogger().info("Ender chests: " + Math.min(6, Math.max(3, getConfig().getInt("enderchest.rows", 6))) + " rows.");
 

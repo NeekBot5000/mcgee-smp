@@ -6,6 +6,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -76,6 +78,13 @@ public final class Shards {
         shards.put(id, cur - amount);
         dirty = true;
         return true;
+    }
+
+    /** Highest first. */
+    public List<Map.Entry<UUID, Long>> top(int n) {
+        List<Map.Entry<UUID, Long>> all = new ArrayList<>(shards.entrySet());
+        all.sort((a, b) -> Long.compare(b.getValue(), a.getValue()));
+        return all.subList(0, Math.min(n, all.size()));
     }
 
     public synchronized void set(UUID id, long amount) {

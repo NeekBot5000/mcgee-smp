@@ -46,6 +46,21 @@ commands:
     description: The auction house.
     aliases: [auction, auctionhouse]
     usage: /ah [sell <price> | search <text> | mine]
+  order:
+    description: Order items from other players; the cost is held up front.
+    usage: /order <amount> <price each>
+  orders:
+    description: Browse orders and fill them from your inventory.
+  stash:
+    description: Collect items delivered to your orders.
+  bounty:
+    description: Put money on a player's head, or list bounties.
+    usage: /bounty [player amount]
+  leaderboard:
+    description: Top players by money, shards, kills and playtime.
+    aliases: [lb, leaderboards]
+  daily:
+    description: Claim your daily reward.
   shardsadmin:
     description: Operator shard controls.
     usage: /shardsadmin <give|take|set> <player> <amount>
