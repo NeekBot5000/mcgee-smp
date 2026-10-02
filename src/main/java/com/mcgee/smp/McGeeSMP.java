@@ -1,5 +1,7 @@
 package com.mcgee.smp;
 
+import com.mcgee.smp.auction.AuctionHouse;
+import com.mcgee.smp.auction.AuctionStore;
 import com.mcgee.smp.economy.Balances;
 import com.mcgee.smp.economy.EconomyCommands;
 import com.mcgee.smp.economy.JoinListener;
@@ -90,6 +92,12 @@ public final class McGeeSMP extends JavaPlugin {
         }
         enderChests = new BigEnderChest(this);
         getServer().getPluginManager().registerEvents(enderChests, this);
+        AuctionHouse ah = new AuctionHouse(this, new AuctionStore(this), balances);
+        PluginCommand ahCmd = getCommand("ah");
+        if (ahCmd != null) { ahCmd.setExecutor(ah); ahCmd.setTabCompleter(ah); }
+        getServer().getPluginManager().registerEvents(ah, this);
+        ah.startRestock();
+
         getLogger().info("Ender chests: " + Math.min(6, Math.max(3, getConfig().getInt("enderchest.rows", 6))) + " rows.");
 
         vaultHooked = hookVault();

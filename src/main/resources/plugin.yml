@@ -42,6 +42,10 @@ commands:
   sidebar:
     description: Show or hide your stats sidebar.
     aliases: [sb]
+  ah:
+    description: The auction house.
+    aliases: [auction, auctionhouse]
+    usage: /ah [sell <price> | search <text> | mine]
   shardsadmin:
     description: Operator shard controls.
     usage: /shardsadmin <give|take|set> <player> <amount>

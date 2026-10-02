@@ -48,6 +48,41 @@ rtp:
   # Spots tried before giving up (oceans, lava and treetops are rejected).
   attempts: 10
 
+auction:
+  # Most listings one player can have at once.
+  max-listings: 20
+  max-price: 100000000000
+  restock:
+    # One stack of something useful is listed by "Server" every interval.
+    enabled: true
+    interval-minutes: 5
+    # Oldest server listings are removed beyond this many.
+    max-server-listings: 30
+    # IMPORTANT: each price must stay ABOVE what your shop pays to buy that
+    # many back, or players can buy here and sell to the shop for free money.
+    # These defaults are deliberately high; check them against your shop.
+    # Prices are for the whole stack and vary +/-10% each time.
+    items:
+      DIAMOND: {amount: 16, price: 16000}
+      IRON_INGOT: {amount: 64, price: 9000}
+      GOLD_INGOT: {amount: 64, price: 12000}
+      EMERALD: {amount: 32, price: 9000}
+      NETHERITE_SCRAP: {amount: 4, price: 30000}
+      OBSIDIAN: {amount: 64, price: 9000}
+      ENDER_PEARL: {amount: 16, price: 6000}
+      BLAZE_ROD: {amount: 32, price: 8000}
+      GOLDEN_CARROT: {amount: 64, price: 6000}
+      COOKED_BEEF: {amount: 64, price: 3000}
+      EXPERIENCE_BOTTLE: {amount: 64, price: 15000}
+      REDSTONE: {amount: 64, price: 4000}
+      LAPIS_LAZULI: {amount: 64, price: 5000}
+      QUARTZ: {amount: 64, price: 5000}
+      SLIME_BALL: {amount: 32, price: 6000}
+      GUNPOWDER: {amount: 64, price: 6000}
+      SHULKER_SHELL: {amount: 2, price: 20000}
+      GOLDEN_APPLE: {amount: 8, price: 10000}
+      TOTEM_OF_UNDYING: {amount: 1, price: 25000}
+
 enderchest:
   # 3 = normal size, up to 6 = double. The first 3 rows are the normal
   # ender chest; the extra rows are saved in plugins/McGeeSMP/enderchests/.
