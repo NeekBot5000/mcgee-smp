@@ -4,6 +4,9 @@ import com.mcgee.smp.economy.Balances;
 import com.mcgee.smp.economy.EconomyCommands;
 import com.mcgee.smp.economy.JoinListener;
 import com.mcgee.smp.economy.Money;
+import com.mcgee.smp.hud.PersonalBoard;
+import com.mcgee.smp.misc.NightVision;
+import com.mcgee.smp.rtp.RandomTeleport;
 import com.mcgee.smp.shards.ShardCommands;
 import com.mcgee.smp.shards.Shards;
 import com.mcgee.smp.tools.AbilityListener;
@@ -59,6 +62,21 @@ public final class McGeeSMP extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new AbilityListener(tools), this);
         getServer().getPluginManager().registerEvents(new SmithingListener(tools), this);
         getLogger().info("Shard shop ready: eternal gear and ability tools (/shardshop).");
+
+        RandomTeleport rtp = new RandomTeleport(this);
+        PluginCommand rtpCmd = getCommand("rtp");
+        if (rtpCmd != null) { rtpCmd.setExecutor(rtp); rtpCmd.setTabCompleter(rtp); }
+
+        NightVision nv = new NightVision(this);
+        PluginCommand nvCmd = getCommand("nightvision");
+        if (nvCmd != null) nvCmd.setExecutor(nv);
+        getServer().getPluginManager().registerEvents(nv, this);
+
+        PersonalBoard board = new PersonalBoard(this, balances, shards);
+        PluginCommand sbCmd = getCommand("sidebar");
+        if (sbCmd != null) sbCmd.setExecutor(board);
+        getServer().getPluginManager().registerEvents(board, this);
+        getLogger().info("RTP, night vision and personal sidebar ready.");
 
         vaultHooked = hookVault();
 

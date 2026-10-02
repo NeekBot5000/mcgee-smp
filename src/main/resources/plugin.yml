@@ -32,6 +32,16 @@ commands:
     description: Spend shards on eternal gear and ability tools.
     aliases: [tools]
     usage: /shardshop
+  rtp:
+    description: Teleport somewhere random (overworld or nether).
+    aliases: [wild, randomtp]
+    usage: /rtp [overworld|nether]
+  nightvision:
+    description: Toggle permanent night vision.
+    aliases: [nv]
+  sidebar:
+    description: Show or hide your stats sidebar.
+    aliases: [sb]
   shardsadmin:
     description: Operator shard controls.
     usage: /shardsadmin <give|take|set> <player> <amount>
@@ -43,4 +53,7 @@ commands:
 permissions:
   mcgee.admin:
     description: Operator economy commands.
+    default: op
+  mcgee.rtp.bypass:
+    description: Skip the /rtp cooldown.
     default: op

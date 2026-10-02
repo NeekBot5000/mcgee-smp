@@ -38,4 +38,14 @@ tools:
   excavator: {cost: 100}
   harvester: {cost: 150}
 
+rtp:
+  # Random teleports land between these distances from the world centre
+  # (divided by 8 in the nether). Capped by the world border.
+  min-radius: 500
+  max-radius: 5000
+  # Enforced for everyone except operators.
+  cooldown-seconds: 60
+  # Spots tried before giving up (oceans, lava and treetops are rejected).
+  attempts: 10
+
 debug: false
