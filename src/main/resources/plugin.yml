@@ -28,6 +28,10 @@ commands:
   buyshards:
     description: Buy shards with money.
     usage: /buyshards <amount>
+  shardshop:
+    description: Spend shards on eternal gear and ability tools.
+    aliases: [tools]
+    usage: /shardshop
   shardsadmin:
     description: Operator shard controls.
     usage: /shardsadmin <give|take|set> <player> <amount>

@@ -6,6 +6,10 @@ import com.mcgee.smp.economy.JoinListener;
 import com.mcgee.smp.economy.Money;
 import com.mcgee.smp.shards.ShardCommands;
 import com.mcgee.smp.shards.Shards;
+import com.mcgee.smp.tools.AbilityListener;
+import com.mcgee.smp.tools.ShardShop;
+import com.mcgee.smp.tools.SmithingListener;
+import com.mcgee.smp.tools.Tools;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
@@ -46,6 +50,15 @@ public final class McGeeSMP extends JavaPlugin {
             }
         }
         startShardTimer();
+
+        Tools tools = new Tools(this);
+        ShardShop shop = new ShardShop(this, tools, shards);
+        PluginCommand shopCmd = getCommand("shardshop");
+        if (shopCmd != null) shopCmd.setExecutor(shop);
+        getServer().getPluginManager().registerEvents(shop, this);
+        getServer().getPluginManager().registerEvents(new AbilityListener(tools), this);
+        getServer().getPluginManager().registerEvents(new SmithingListener(tools), this);
+        getLogger().info("Shard shop ready: eternal gear and ability tools (/shardshop).");
 
         vaultHooked = hookVault();
 

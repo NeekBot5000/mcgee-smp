@@ -22,4 +22,20 @@ shards:
   # Most shards that can be bought in one go.
   max-buy: 1000
 
+tools:
+  # Shard costs. Eternal gear never breaks and is about half the price of the
+  # ability tools (task doc). Change any number here and restart.
+  eternal_sword: {cost: 50}
+  eternal_pickaxe: {cost: 50}
+  eternal_axe: {cost: 50}
+  eternal_shovel: {cost: 50}
+  eternal_hoe: {cost: 50}
+  eternal_helmet: {cost: 50}
+  eternal_chestplate: {cost: 50}
+  eternal_leggings: {cost: 50}
+  eternal_boots: {cost: 50}
+  tree_axe: {cost: 75}
+  excavator: {cost: 100}
+  harvester: {cost: 150}
+
 debug: false
