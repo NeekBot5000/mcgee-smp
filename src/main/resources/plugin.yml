@@ -1,0 +1,10 @@
+name: McGeeSMP
+version: '${project.version}'
+main: com.mcgee.smp.McGeeSMP
+api-version: '1.21'
+description: Economy and gameplay systems for the McGee SMP.
+authors: [NeekBot5000]
+commands:
+  smpinfo:
+    description: Show plugin status.
+    usage: /smpinfo

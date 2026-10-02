@@ -1,0 +1,56 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Runs BEFORE the build so the log shows the real version list even when
+      # the compile fails. Paper moved to year-based versions (26.x), so the
+      # right one has to be read off the repository rather than assumed.
+      - name: Available paper-api versions
+        run: |
+          echo "=== latest 20 paper-api versions ==="
+          curl -sSL --max-time 30 \
+            https://repo.papermc.io/repository/maven-public/io/papermc/paper/paper-api/maven-metadata.xml \
+            -o meta.xml || echo "could not fetch metadata"
+          if [ -f meta.xml ]; then
+            grep -o '<version>[^<]*</version>' meta.xml \
+              | sed 's/<[^>]*>//g' | tail -20
+            echo "=== release/latest markers ==="
+            grep -o '<release>[^<]*</release>' meta.xml | sed 's/<[^>]*>//g' || true
+            grep -o '<latest>[^<]*</latest>' meta.xml | sed 's/<[^>]*>//g' || true
+          fi
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build
+        run: mvn -B -ntp package
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: McGeeSMP-jar
+          path: target/*.jar
+          if-no-files-found: error
+
+      # One-click download: the jar is attached to a release.
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: McGeeSMP build ${{ github.run_number }}
+          files: target/*.jar
+          generate_release_notes: false
