@@ -194,6 +194,7 @@ public final class Orders implements CommandExecutor, Listener {
             h.slots.put(i, o.id);
         }
         if (h.page > 0) inv.setItem(45, button(Material.ARROW, "Previous page"));
+        inv.setItem(47, button(Material.SUNFLOWER, "Refresh (" + list.size() + " orders)"));
         inv.setItem(49, button(Material.ENDER_CHEST, "Your stash: " + stashCount(p.getUniqueId()) + " items (/stash)"));
         if (h.page < pages - 1) inv.setItem(53, button(Material.ARROW, "Next page"));
         p.openInventory(inv);
@@ -215,6 +216,7 @@ public final class Orders implements CommandExecutor, Listener {
         int slot = e.getRawSlot();
         if (slot == 45) { h.page--; Bukkit.getScheduler().runTask(plugin, () -> open(p, h)); return; }
         if (slot == 53) { h.page++; Bukkit.getScheduler().runTask(plugin, () -> open(p, h)); return; }
+        if (slot == 47) { Bukkit.getScheduler().runTask(plugin, () -> open(p, h)); return; }
         if (slot == 49) { Bukkit.getScheduler().runTask(plugin, () -> { p.closeInventory(); collect(p); }); return; }
         UUID id = h.slots.get(slot);
         if (id == null) return;
