@@ -9,6 +9,7 @@ import com.mcgee.smp.economy.JoinListener;
 import com.mcgee.smp.economy.Money;
 import com.mcgee.smp.hud.PersonalBoard;
 import com.mcgee.smp.misc.BabyCramming;
+import com.mcgee.smp.misc.BreedingRefill;
 import com.mcgee.smp.misc.LocatorBar;
 import com.mcgee.smp.misc.MapBlocker;
 import com.mcgee.smp.misc.NightVision;
@@ -101,6 +102,7 @@ public final class McGeeSMP extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new LocatorBar(this), this);
         }
         new BabyCramming(this).start();
+        getServer().getPluginManager().registerEvents(new BreedingRefill(this), this);
         enderChests = new BigEnderChest(this);
         getServer().getPluginManager().registerEvents(enderChests, this);
         AuctionHouse ah = new AuctionHouse(this, new AuctionStore(this), balances);
