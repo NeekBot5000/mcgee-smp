@@ -39,6 +39,7 @@ public final class ShardShop implements Listener, CommandExecutor {
 
     private static final int[] ETERNAL_SLOTS = {9, 10, 11, 12, 13, 14, 15, 16, 17};
     private static final int[] ABILITY_SLOTS = {29, 31, 33};
+    private static final int[] BLOCK_SLOTS = {40};
 
     private final JavaPlugin plugin;
     private final Tools tools;
@@ -48,6 +49,8 @@ public final class ShardShop implements Listener, CommandExecutor {
         this.plugin = plugin;
         this.tools = tools;
         this.shards = shards;
+        // The Super Hopper block behaviour lives with the shop items it belongs to.
+        plugin.getServer().getPluginManager().registerEvents(new SuperHopper(plugin, tools), plugin);
     }
 
     @Override
@@ -74,15 +77,17 @@ public final class ShardShop implements Listener, CommandExecutor {
         meta.lore(List.of(
                 Component.text("Top row: eternal gear, never breaks", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
                 Component.text("Bottom row: ability tools", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
+                Component.text("Very bottom: Super Hopper", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
                 Component.text("Earn shards by playing, or /buyshards", NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false)));
         info.setItemMeta(meta);
         inv.setItem(4, info);
 
-        int e = 0, a = 0;
+        int e = 0, a = 0, b = 0;
         for (ToolType t : ToolType.values()) {
             int slot;
             if (t.kind == ToolType.Kind.ETERNAL && e < ETERNAL_SLOTS.length) slot = ETERNAL_SLOTS[e++];
             else if (t.kind == ToolType.Kind.ABILITY && a < ABILITY_SLOTS.length) slot = ABILITY_SLOTS[a++];
+            else if (t.kind == ToolType.Kind.BLOCK && b < BLOCK_SLOTS.length) slot = BLOCK_SLOTS[b++];
             else continue;
             inv.setItem(slot, tools.display(t, owned));
             holder.slots.put(slot, t);

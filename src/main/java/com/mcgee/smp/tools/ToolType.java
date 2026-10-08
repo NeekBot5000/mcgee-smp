@@ -23,9 +23,11 @@ public enum ToolType {
 
     TREE_AXE("tree_axe", Material.DIAMOND_AXE, "Tree Breaker Axe", Kind.ABILITY, 75),
     EXCAVATOR("excavator", Material.DIAMOND_PICKAXE, "Excavator Pickaxe", Kind.ABILITY, 100),
-    HARVESTER("harvester", Material.DIAMOND_HOE, "Harvester Hoe", Kind.ABILITY, 150);
+    HARVESTER("harvester", Material.DIAMOND_HOE, "Harvester Hoe", Kind.ABILITY, 150),
 
-    public enum Kind { ETERNAL, ABILITY }
+    SUPER_HOPPER("super_hopper", Material.HOPPER, "Super Hopper", Kind.BLOCK, 50);
+
+    public enum Kind { ETERNAL, ABILITY, BLOCK }
 
     public final String id;
     public final Material material;
@@ -46,6 +48,7 @@ public enum ToolType {
             case TREE_AXE -> "Fells the whole tree. Sneak to cut one log.";
             case EXCAVATOR -> "Mines a 3x3 area. Sneak to mine one block.";
             case HARVESTER -> "Harvests and replants ripe crops in a 3x3.";
+            case SUPER_HOPPER -> "Moves items 10x faster than a normal hopper.";
             default -> "Never breaks. Upgrade it to netherite and it stays unbreakable.";
         };
     }
