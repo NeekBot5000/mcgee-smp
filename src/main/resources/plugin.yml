@@ -22,6 +22,9 @@ commands:
   baltop:
     description: The richest players.
     aliases: [balancetop]
+  interest:
+    description: Show the compound interest rate and your next payout.
+    usage: /interest
   shards:
     description: Show your shards, or someone else's.
     usage: /shards [player]

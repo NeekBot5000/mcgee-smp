@@ -13,6 +13,18 @@ economy:
     "Viperishfive48": 17000
     "Tonyt1234563": 10000
 
+  # Compound interest: every interval each eligible balance earns rate-percent
+  # and it is added to the balance, so the next payout is on the bigger number.
+  # It is NEW money, so keep it small. The caps stop it spiralling.
+  interest:
+    enabled: true
+    rate-percent: 0.5          # per payout
+    interval-minutes: 60
+    min-balance: 100           # below this earns nothing
+    max-balance: 1000000       # only the first this-much earns (growth goes flat above it)
+    max-payout: 5000           # hard cap on one payout
+    online-only: true          # false = offline players earn too
+
 shards:
   # Everyone online earns this many shards every interval.
   amount: 1
