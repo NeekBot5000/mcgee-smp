@@ -14,6 +14,8 @@ import java.util.List;
  * entity-cramming limit (the usual lag/farm trick). This counts every baby as if
  * it were an adult: if more than the limit are packed into an adult-sized space,
  * the babies take cramming damage, just like adults would.
+ *
+ * cramming.max-entities: 100 by default; 0 (or babies-count-as-adults: false) turns it off.
  */
 public final class BabyCramming {
     private final JavaPlugin plugin;
@@ -23,13 +25,14 @@ public final class BabyCramming {
     }
 
     public void start() {
-        if (!plugin.getConfig().getBoolean("cramming.babies-count-as-adults", true)) {
+        int limit = plugin.getConfig().getInt("cramming.max-entities", 100);
+        if (limit <= 0 || !plugin.getConfig().getBoolean("cramming.babies-count-as-adults", true)) {
             plugin.getLogger().info("Baby cramming protection: off.");
             return;
         }
-        int limit = Math.max(2, plugin.getConfig().getInt("cramming.max-entities", 24));
-        plugin.getServer().getScheduler().runTaskTimer(plugin, () -> sweep(limit), 40L, 20L);
-        plugin.getLogger().info("Baby cramming protection: babies count as adults (limit " + limit + " per block).");
+        int max = Math.max(2, limit);
+        plugin.getServer().getScheduler().runTaskTimer(plugin, () -> sweep(max), 40L, 20L);
+        plugin.getLogger().info("Baby cramming protection: babies count as adults (limit " + max + " per block).");
     }
 
     private void sweep(int limit) {
