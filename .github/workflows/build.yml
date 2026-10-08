@@ -77,6 +77,7 @@ jobs:
           fi
           echo "smpinfo" >&3
           echo "baltop" >&3
+          echo "interest" >&3
           echo "ah restock" >&3
           sleep 5
           echo "stop" >&3
@@ -94,6 +95,7 @@ jobs:
           grep -q "Economy registered with Vault" server.log    || { echo "::error::Economy did not hook into Vault"; fail=1; }
           grep -q "is loaded" server.log                        || { echo "::error::/smpinfo did not respond"; fail=1; }
           grep -q "Richest players" server.log                  || { echo "::error::/baltop did not respond"; fail=1; }
+          grep -q "Compound interest: 0.5%" server.log          || { echo "::error::/interest did not respond"; fail=1; }
           grep -q "Auction restock: added" server.log           || { echo "::error::Auction restock did not add a listing"; fail=1; }
           test -s plugins/McGeeSMP/auction.yml                  || { echo "::error::auction.yml was not saved"; fail=1; }
           if grep -iE "error occurred while enabling McGeeSMP|could not load 'plugins/McGeeSMP" server.log; then fail=1; fi

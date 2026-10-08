@@ -4,6 +4,7 @@ import com.mcgee.smp.auction.AuctionHouse;
 import com.mcgee.smp.auction.AuctionStore;
 import com.mcgee.smp.economy.Balances;
 import com.mcgee.smp.economy.EconomyCommands;
+import com.mcgee.smp.economy.Interest;
 import com.mcgee.smp.economy.JoinListener;
 import com.mcgee.smp.economy.Money;
 import com.mcgee.smp.hud.PersonalBoard;
@@ -52,6 +53,10 @@ public final class McGeeSMP extends JavaPlugin {
             }
         }
         getServer().getPluginManager().registerEvents(new JoinListener(this, balances), this);
+        Interest interest = new Interest(this, balances);
+        PluginCommand interestCmd = getCommand("interest");
+        if (interestCmd != null) interestCmd.setExecutor(interest);
+        interest.start();
 
         shards = new Shards(this);
         ShardCommands shardCmds = new ShardCommands(this, shards, balances);
